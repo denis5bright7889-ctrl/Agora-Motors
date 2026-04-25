@@ -1,4 +1,4 @@
-// client/src/pages/ListingsPage.jsx
+﻿// client/src/pages/ListingsPage.jsx
 
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -9,7 +9,7 @@ import CarCardSkeleton from '../components/cars/CarCardSkeleton';
 import SearchFilters from '../components/cars/SearchFilters';
 import Pagination from '../components/common/Pagination';
 import EmptyState from '../components/common/EmptyState';
-import { SORT_OPTIONS } from '../../../shared/constants';
+import { SORT_OPTIONS } from '../constants';
 import { pluralise } from '../utils/helpers';
 
 const DEFAULT_FILTERS = {
@@ -30,7 +30,7 @@ export default function ListingsPage() {
     ...Object.fromEntries(searchParams.entries()),
   }));
 
-  // Sync filters → URL
+  // Sync filters â†’ URL
   const syncUrl = useCallback((f) => {
     const params = {};
     Object.entries(f).forEach(([k, v]) => {
@@ -96,7 +96,7 @@ export default function ListingsPage() {
             {/* Sort bar */}
             <div className="flex items-center justify-between mb-5">
               <p className="text-sm text-slate-500 hidden lg:block">
-                {loading ? 'Loading…' : `${pluralise(pagination.total, 'result')}`}
+                {loading ? 'Loadingâ€¦' : `${pluralise(pagination.total, 'result')}`}
               </p>
               <div className="flex items-center gap-3 ml-auto">
                 <label className="text-sm text-slate-500 hidden sm:block">Sort:</label>
@@ -141,3 +141,4 @@ export default function ListingsPage() {
     </div>
   );
 }
+

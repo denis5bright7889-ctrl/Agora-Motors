@@ -1,8 +1,8 @@
-// client/src/components/cars/SearchFilters.jsx
+﻿// client/src/components/cars/SearchFilters.jsx
 
 import { useState } from 'react';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
-import { CAR_BRANDS, LOCATIONS, BODY_TYPES, FUEL_TYPES, TRANSMISSION_TYPES } from '../../../../shared/constants';
+import { CAR_BRANDS, LOCATIONS, BODY_TYPES, FUEL_TYPES, TRANSMISSION_TYPES } from '../constants';
 
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: 30 }, (_, i) => currentYear - i);
@@ -24,7 +24,7 @@ export default function SearchFilters({ filters, onChange, onReset }) {
           <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             className="input pl-10"
-            placeholder="Search cars…"
+            placeholder="Search carsâ€¦"
             value={filters.search || ''}
             onChange={(e) => handleChange('search', e.target.value)}
           />
@@ -85,7 +85,7 @@ function FilterFields({ filters, onChange, onReset }) {
           <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             className="input pl-9"
-            placeholder="Make, model, keyword…"
+            placeholder="Make, model, keywordâ€¦"
             value={filters.search || ''}
             onChange={(e) => onChange('search', e.target.value)}
           />
@@ -144,3 +144,4 @@ function FilterSelect({ label, field, options, filters, onChange }) {
     </div>
   );
 }
+

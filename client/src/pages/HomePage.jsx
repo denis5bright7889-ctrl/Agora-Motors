@@ -1,4 +1,4 @@
-// client/src/pages/HomePage.jsx
+﻿// client/src/pages/HomePage.jsx
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -6,7 +6,7 @@ import { Search, ArrowRight, Shield, Zap, Star, ChevronRight } from 'lucide-reac
 import { carsApi } from '../api/carsApi';
 import CarCard from '../components/cars/CarCard';
 import CarCardSkeleton from '../components/cars/CarCardSkeleton';
-import { CAR_BRANDS } from '../../../shared/constants';
+import { CAR_BRANDS } from '../constants';
 
 // Popular brands to feature (subset with logos via placeholder)
 const FEATURED_BRANDS = ['Toyota', 'Honda', 'BMW', 'Mercedes-Benz', 'Ford', 'Audi', 'Hyundai', 'Volkswagen'];
@@ -56,7 +56,7 @@ export default function HomePage() {
 
   return (
     <div>
-      {/* ── Hero ─────────────────────────────────────────────────────────── */}
+      {/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="relative bg-slate-900 overflow-hidden">
         {/* Background texture */}
         <div
@@ -92,7 +92,7 @@ export default function HomePage() {
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search by make, model, or keyword…"
+                  placeholder="Search by make, model, or keywordâ€¦"
                   className="w-full bg-white/10 backdrop-blur border border-white/20 text-white placeholder:text-slate-500
                              rounded-2xl pl-12 pr-4 py-3.5 text-sm focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-400/20"
                 />
@@ -119,7 +119,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Stats ────────────────────────────────────────────────────────── */}
+      {/* â”€â”€ Stats â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-brand-600">
         <div className="container-xl">
           <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-brand-500">
@@ -133,7 +133,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Latest Listings ──────────────────────────────────────────────── */}
+      {/* â”€â”€ Latest Listings â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="section">
         <div className="container-xl">
           <div className="flex items-end justify-between mb-8">
@@ -167,7 +167,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Browse by Brand ──────────────────────────────────────────────── */}
+      {/* â”€â”€ Browse by Brand â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="section bg-slate-50 border-y border-slate-100">
         <div className="container-xl">
           <div className="text-center mb-10">
@@ -201,7 +201,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Why CarMax ───────────────────────────────────────────────────── */}
+      {/* â”€â”€ Why CarMax â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="section">
         <div className="container-xl">
           <div className="text-center mb-12">
@@ -222,7 +222,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── CTA Banner ───────────────────────────────────────────────────── */}
+      {/* â”€â”€ CTA Banner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-slate-900 py-16">
         <div className="container-xl text-center">
           <h2 className="font-display text-4xl md:text-5xl text-white tracking-wider mb-4">
@@ -239,3 +239,4 @@ export default function HomePage() {
     </div>
   );
 }
+

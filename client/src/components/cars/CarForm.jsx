@@ -1,4 +1,4 @@
-// client/src/components/cars/CarForm.jsx — Reusable create/edit form
+﻿// client/src/components/cars/CarForm.jsx â€” Reusable create/edit form
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -6,7 +6,7 @@ import { Upload, X, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import {
   CAR_BRANDS, BODY_TYPES, FUEL_TYPES, TRANSMISSION_TYPES, LOCATIONS,
-} from '../../../../shared/constants';
+} from '../constants';
 
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: 30 }, (_, i) => currentYear - i);
@@ -71,7 +71,7 @@ export default function CarForm({ defaultValues = {}, onSubmit, loading, submitL
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-8" noValidate>
 
-      {/* ── Basic Info ── */}
+      {/* â”€â”€ Basic Info â”€â”€ */}
       <Section title="Basic Information">
         <div className="grid sm:grid-cols-2 gap-5">
           <Field label="Listing Title *" error={errors.title?.message} className="sm:col-span-2">
@@ -113,13 +113,13 @@ export default function CarForm({ defaultValues = {}, onSubmit, loading, submitL
         </div>
       </Section>
 
-      {/* ── Pricing & Details ── */}
+      {/* â”€â”€ Pricing & Details â”€â”€ */}
       <Section title="Pricing & Details">
         <div className="grid sm:grid-cols-2 gap-5">
           <Field label="Price (KES) *" error={errors.price?.message}>
             <input
               type="number" min="0"
-              {...register('price', { required: 'Price is required', min: { value: 0, message: 'Must be ≥ 0' }, valueAsNumber: true })}
+              {...register('price', { required: 'Price is required', min: { value: 0, message: 'Must be â‰¥ 0' }, valueAsNumber: true })}
               className={`input ${errors.price ? 'input-error' : ''}`}
               placeholder="e.g. 2500000"
             />
@@ -128,7 +128,7 @@ export default function CarForm({ defaultValues = {}, onSubmit, loading, submitL
           <Field label="Mileage (km) *" error={errors.mileage?.message}>
             <input
               type="number" min="0"
-              {...register('mileage', { required: 'Mileage is required', min: { value: 0, message: 'Must be ≥ 0' }, valueAsNumber: true })}
+              {...register('mileage', { required: 'Mileage is required', min: { value: 0, message: 'Must be â‰¥ 0' }, valueAsNumber: true })}
               className={`input ${errors.mileage ? 'input-error' : ''}`}
               placeholder="e.g. 45000"
             />
@@ -170,19 +170,19 @@ export default function CarForm({ defaultValues = {}, onSubmit, loading, submitL
         </div>
       </Section>
 
-      {/* ── Description ── */}
+      {/* â”€â”€ Description â”€â”€ */}
       <Section title="Description">
         <Field label="Description">
           <textarea
             {...register('description')}
             rows={5}
             className="input resize-none"
-            placeholder="Describe the car in detail — service history, modifications, extras…"
+            placeholder="Describe the car in detail â€” service history, modifications, extrasâ€¦"
           />
         </Field>
       </Section>
 
-      {/* ── Images ── */}
+      {/* â”€â”€ Images â”€â”€ */}
       <Section title="Photos">
         <p className="text-sm text-slate-500 mb-4">Upload up to 8 photos. First photo will be the cover image.</p>
 
@@ -232,7 +232,7 @@ export default function CarForm({ defaultValues = {}, onSubmit, loading, submitL
             <Upload size={24} className="text-slate-400" />
             <div className="text-center">
               <p className="text-sm font-medium text-slate-700">Click to upload photos</p>
-              <p className="text-xs text-slate-400 mt-1">JPG, PNG, WebP · Max 5MB each</p>
+              <p className="text-xs text-slate-400 mt-1">JPG, PNG, WebP Â· Max 5MB each</p>
             </div>
             <input type="file" multiple accept="image/*" className="hidden" onChange={handleFiles} />
           </label>
@@ -241,7 +241,7 @@ export default function CarForm({ defaultValues = {}, onSubmit, loading, submitL
 
       {/* Submit */}
       <button type="submit" disabled={loading} className="btn-primary btn-lg w-full sm:w-auto">
-        {loading ? <><Loader2 size={18} className="animate-spin" /> Saving…</> : submitLabel}
+        {loading ? <><Loader2 size={18} className="animate-spin" /> Savingâ€¦</> : submitLabel}
       </button>
     </form>
   );
@@ -267,3 +267,4 @@ function Field({ label, error, children, className = '' }) {
     </div>
   );
 }
+
