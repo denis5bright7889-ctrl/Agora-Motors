@@ -1,12 +1,7 @@
 ﻿// client/src/components/cars/CarForm.jsx â€” Reusable create/edit form
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Upload, X, Loader2 } from 'lucide-react';
+import { CAR_BRANDS, BODY_TYPES, FUEL_TYPES, TRANSMISSION_TYPES } from '../../constants';
 import toast from 'react-hot-toast';
-import {
-  CAR_BRANDS, BODY_TYPES, FUEL_TYPES, TRANSMISSION_TYPES, LOCATIONS,
-} from '../constants';
 
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: 30 }, (_, i) => currentYear - i);
@@ -267,4 +262,9 @@ function Field({ label, error, children, className = '' }) {
     </div>
   );
 }
+
+
+
+
+
 

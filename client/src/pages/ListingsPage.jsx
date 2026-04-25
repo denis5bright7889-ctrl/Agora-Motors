@@ -1,16 +1,11 @@
 ﻿// client/src/pages/ListingsPage.jsx
 
-import { useState, useEffect, useCallback } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { LayoutGrid, List, SlidersHorizontal } from 'lucide-react';
-import { carsApi } from '../api/carsApi';
+import { CAR_BRANDS, LOCATIONS } from '../constants';
 import CarCard from '../components/cars/CarCard';
 import CarCardSkeleton from '../components/cars/CarCardSkeleton';
 import SearchFilters from '../components/cars/SearchFilters';
 import Pagination from '../components/common/Pagination';
 import EmptyState from '../components/common/EmptyState';
-import { SORT_OPTIONS } from '../constants';
-import { pluralise } from '../utils/helpers';
 
 const DEFAULT_FILTERS = {
   search: '', brand: '', location: '', bodyType: '',
@@ -141,4 +136,9 @@ export default function ListingsPage() {
     </div>
   );
 }
+
+
+
+
+
 

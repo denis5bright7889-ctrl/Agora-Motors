@@ -1,4 +1,4 @@
-// shared/constants.js — shared between client and server
+﻿// shared/constants.js â€” shared between client and server
 
 const CAR_BRANDS = [
   'Toyota', 'Honda', 'Ford', 'Chevrolet', 'BMW', 'Mercedes-Benz',
@@ -26,9 +26,9 @@ const LOCATIONS = [
 
 const PRICE_RANGES = [
   { label: 'Under KES 500K', min: 0, max: 500000 },
-  { label: 'KES 500K – 1M', min: 500000, max: 1000000 },
-  { label: 'KES 1M – 2M', min: 1000000, max: 2000000 },
-  { label: 'KES 2M – 5M', min: 2000000, max: 5000000 },
+  { label: 'KES 500K â€“ 1M', min: 500000, max: 1000000 },
+  { label: 'KES 1M â€“ 2M', min: 1000000, max: 2000000 },
+  { label: 'KES 2M â€“ 5M', min: 2000000, max: 5000000 },
   { label: 'Over KES 5M', min: 5000000, max: null },
 ];
 
@@ -57,3 +57,4 @@ module.exports = {
   SORT_OPTIONS,
   PAGINATION,
 };
+
