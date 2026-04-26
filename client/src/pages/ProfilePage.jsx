@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { User, Lock, Loader2, CheckCircle } from 'lucide-react';
+import { User, Lock, Loader2, CheckCircle, Mail, Phone, ShieldCheck, HelpCircle } from 'lucide-react';
 import { authApi } from '../api/authApi';
 import { useAuth } from '../context/AuthContext';
 import { getErrorMessage } from '../utils/helpers';
@@ -21,7 +21,8 @@ export default function ProfilePage() {
       </div>
 
       <div className="container-xl py-8">
-        <div className="max-w-2xl">
+        <div className="grid lg:grid-cols-[1fr_320px] gap-6 items-start">
+          <div>
           {/* Tabs */}
           <div className="flex gap-1 bg-white rounded-2xl shadow-card p-1.5 mb-6 w-fit">
             <TabBtn active={tab === 'profile'} onClick={() => setTab('profile')} icon={<User size={15}/>} label="Profile" />
@@ -35,6 +36,36 @@ export default function ProfilePage() {
               <PasswordForm />
             )}
           </div>
+          </div>
+
+          <aside className="space-y-4">
+            <div className="bg-white rounded-2xl shadow-card p-5">
+              <h3 className="font-semibold text-slate-800 mb-4">Account Summary</h3>
+              <div className="space-y-3 text-sm text-slate-600">
+                <InfoRow icon={Mail} label="Email" value={user?.email || 'Not provided'} />
+                <InfoRow icon={Phone} label="Phone" value={user?.phone || 'Not added'} />
+                <InfoRow icon={ShieldCheck} label="Status" value="Secure account" />
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-card p-5">
+              <h3 className="font-semibold text-slate-800 mb-3">Security Tips</h3>
+              <ul className="text-sm text-slate-600 space-y-2 list-disc list-inside">
+                <li>Use a unique password for this account.</li>
+                <li>Update your password regularly.</li>
+                <li>Never share login details with anyone.</li>
+              </ul>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+              <div className="flex items-start gap-2">
+                <HelpCircle size={16} className="text-slate-500 mt-0.5" />
+                <p className="text-sm text-slate-600">
+                  Need help with your account? Contact support from the marketplace help section.
+                </p>
+              </div>
+            </div>
+          </aside>
         </div>
       </div>
     </div>
@@ -188,5 +219,17 @@ function TabBtn({ active, onClick, icon, label }) {
     >
       {icon} {label}
     </button>
+  );
+}
+
+function InfoRow({ icon: Icon, label, value }) {
+  return (
+    <div className="flex items-start gap-2">
+      <Icon size={14} className="text-slate-400 mt-0.5" />
+      <div>
+        <p className="text-xs text-slate-400">{label}</p>
+        <p className="text-sm text-slate-700">{value}</p>
+      </div>
+    </div>
   );
 }

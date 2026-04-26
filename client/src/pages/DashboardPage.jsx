@@ -2,7 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Car, Eye, Heart, Edit2, Trash2, ToggleLeft, ToggleRight, Loader2 } from 'lucide-react';
+import {
+  Plus,
+  Car,
+  Eye,
+  Heart,
+  Edit2,
+  Trash2,
+  ToggleLeft,
+  ToggleRight,
+  Loader2,
+  BadgeCheck,
+  Clock3,
+  ArrowRight,
+} from 'lucide-react';
 import { carsApi } from '../api/carsApi';
 import { useAuth } from '../context/AuthContext';
 import { formatPrice, timeAgo, CAR_PLACEHOLDER } from '../utils/helpers';
@@ -54,6 +67,13 @@ export default function DashboardPage() {
     { label: 'Total Views',    value: cars.reduce((s, c) => s + c.views, 0), icon: Eye },
     { label: 'Saved',          value: cars.reduce((s, c) => s + (c.favoritedBy?.length || 0), 0), icon: Heart },
   ];
+  const recentListings = [...cars]
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 4);
+  const bestPerformer = cars.reduce((best, current) => {
+    if (!best) return current;
+    return (current.views || 0) > (best.views || 0) ? current : best;
+  }, null);
 
   return (
     <div className="bg-slate-50 min-h-screen">
@@ -85,6 +105,72 @@ export default function DashboardPage() {
               <p className="text-2xl font-bold text-slate-800">{value.toLocaleString()}</p>
             </div>
           ))}
+        </div>
+
+        {/* Insight + quick actions */}
+        <div className="grid lg:grid-cols-3 gap-5">
+          <div className="lg:col-span-2 bg-white rounded-2xl shadow-card p-6">
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <h2 className="font-semibold text-slate-800">Performance Snapshot</h2>
+              <span className="text-xs text-slate-400 flex items-center gap-1">
+                <Clock3 size={13} />
+                Live
+              </span>
+            </div>
+
+            {cars.length === 0 ? (
+              <p className="text-sm text-slate-500">
+                Once you create listings, this section will show which cars are performing best.
+              </p>
+            ) : (
+              <div className="space-y-4">
+                <div className="rounded-xl border border-slate-100 p-4 bg-slate-50">
+                  <p className="text-xs uppercase tracking-wide text-slate-400 mb-1">Top Listing</p>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="font-semibold text-slate-800 truncate">{bestPerformer?.title}</p>
+                      <p className="text-sm text-slate-500">
+                        {formatPrice(bestPerformer?.price)} · {bestPerformer?.location}
+                      </p>
+                    </div>
+                    <span className="badge-green shrink-0">{(bestPerformer?.views || 0).toLocaleString()} views</span>
+                  </div>
+                </div>
+
+                <div className="grid sm:grid-cols-3 gap-3">
+                  <MetricCard title="Paused Listings" value={cars.filter((c) => !c.isAvailable).length} />
+                  <MetricCard title="Avg. Views / Listing" value={Math.round((cars.reduce((s, c) => s + (c.views || 0), 0) / cars.length) || 0)} />
+                  <MetricCard title="Recently Added" value={recentListings.length} />
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-card p-6">
+            <h2 className="font-semibold text-slate-800 mb-4">Quick Actions</h2>
+            <div className="space-y-3">
+              <Link to="/listings/new" className="btn-primary w-full justify-between">
+                Create new listing
+                <ArrowRight size={15} />
+              </Link>
+              <Link to="/cars" className="btn-outline w-full justify-between">
+                View marketplace
+                <ArrowRight size={15} />
+              </Link>
+              <Link to="/profile" className="btn-outline w-full justify-between">
+                Update account
+                <ArrowRight size={15} />
+              </Link>
+            </div>
+
+            <div className="mt-5 pt-5 border-t border-slate-100">
+              <p className="text-xs uppercase tracking-wide text-slate-400 mb-2">Account Status</p>
+              <div className="text-sm text-slate-600 flex items-center gap-2">
+                <BadgeCheck size={15} className="text-emerald-500" />
+                {user?.email || 'No email on file'}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Listings table */}
@@ -120,7 +206,40 @@ export default function DashboardPage() {
             </div>
           )}
         </div>
+
+        {/* Recent activity */}
+        <div className="bg-white rounded-2xl shadow-card p-6">
+          <h2 className="font-semibold text-slate-800 mb-4">Recent Activity</h2>
+          {recentListings.length === 0 ? (
+            <p className="text-sm text-slate-500">No recent activity yet.</p>
+          ) : (
+            <div className="space-y-3">
+              {recentListings.map((car) => (
+                <div key={car._id} className="flex items-center justify-between gap-4 py-2">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-slate-800 truncate">{car.title}</p>
+                    <p className="text-xs text-slate-500">
+                      Added {timeAgo(car.createdAt)} · {car.views || 0} views
+                    </p>
+                  </div>
+                  <Link to={`/cars/${car._id}`} className="text-sm text-brand-600 hover:underline shrink-0">
+                    View
+                  </Link>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
+    </div>
+  );
+}
+
+function MetricCard({ title, value }) {
+  return (
+    <div className="rounded-xl border border-slate-100 p-4">
+      <p className="text-xs text-slate-500 mb-1">{title}</p>
+      <p className="text-xl font-bold text-slate-800">{value.toLocaleString()}</p>
     </div>
   );
 }
