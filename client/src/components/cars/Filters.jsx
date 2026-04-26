@@ -1,5 +1,7 @@
 ﻿// client/src/components/cars/SearchFilters.jsx
 
+import { useState } from 'react';
+import { Search, SlidersHorizontal, X } from 'lucide-react';
 import { CAR_BRANDS, LOCATIONS, BODY_TYPES, FUEL_TYPES, TRANSMISSION_TYPES } from '../../constants';
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: 30 }, (_, i) => currentYear - i);

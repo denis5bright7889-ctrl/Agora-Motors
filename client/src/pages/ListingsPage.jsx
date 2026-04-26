@@ -1,17 +1,30 @@
 ﻿// client/src/pages/ListingsPage.jsx
 
+import { useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { carsApi } from '../api/carsApi';
 import { CAR_BRANDS, LOCATIONS } from '../constants';
 import CarCard from '../components/cars/CarCard';
-import CarCardSkeleton from '../components/cars/CarCardSkeleton';
-import SearchFilters from '../components/cars/SearchFilters';
+import CarCardSkeleton from '../components/cars/Skeleton';
+import SearchFilters from '../components/cars/Filters';
 import Pagination from '../components/common/Pagination';
 import EmptyState from '../components/common/EmptyState';
+import { pluralise } from '../utils/helpers';
 
 const DEFAULT_FILTERS = {
   search: '', brand: '', location: '', bodyType: '',
   fuelType: '', transmission: '', year: '', condition: '',
   minPrice: '', maxPrice: '', sort: '-createdAt', page: 1,
 };
+
+const SORT_OPTIONS = [
+  { value: '-createdAt', label: 'Newest first' },
+  { value: 'createdAt', label: 'Oldest first' },
+  { value: '-price', label: 'Price: High to Low' },
+  { value: 'price', label: 'Price: Low to High' },
+  { value: '-year', label: 'Year: Newest' },
+  { value: 'year', label: 'Year: Oldest' },
+];
 
 export default function ListingsPage() {
   const [searchParams, setSearchParams] = useSearchParams();

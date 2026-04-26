@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 import api from '../services/api'
 import toast from 'react-hot-toast'
 
@@ -18,9 +18,14 @@ export const AuthProvider = ({ children }) => {
     setLoading(false)
   }, [])
 
-  const login = async (email, password) => {
+  const login = async (emailOrPayload, passwordArg) => {
+    const payload =
+      typeof emailOrPayload === 'object' && emailOrPayload !== null
+        ? emailOrPayload
+        : { email: emailOrPayload, password: passwordArg }
+
     try {
-      const response = await api.post('/auth/login', { email, password })
+      const response = await api.post('/auth/login', payload)
       const { token, ...userData } = response.data
       localStorage.setItem('token', token)
       localStorage.setItem('user', JSON.stringify(userData))
@@ -34,9 +39,14 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const register = async (name, email, password) => {
+  const register = async (nameOrPayload, emailArg, passwordArg) => {
+    const payload =
+      typeof nameOrPayload === 'object' && nameOrPayload !== null
+        ? nameOrPayload
+        : { name: nameOrPayload, email: emailArg, password: passwordArg }
+
     try {
-      const response = await api.post('/auth/register', { name, email, password })
+      const response = await api.post('/auth/register', payload)
       const { token, ...userData } = response.data
       localStorage.setItem('token', token)
       localStorage.setItem('user', JSON.stringify(userData))
@@ -58,9 +68,26 @@ export const AuthProvider = ({ children }) => {
     toast.success('Logged out successfully')
   }
 
+  const updateUser = (nextUser) => {
+    setUser(nextUser)
+    localStorage.setItem('user', JSON.stringify(nextUser))
+  }
+
+  const isAuthenticated = Boolean(user)
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ user, loading, isAuthenticated, login, register, logout, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   )
+}
+
+export const useAuth = () => {
+  const context = useContext(AuthContext)
+  if (!context) {
+    throw new Error('useAuth must be used within AuthProvider')
+  }
+  return context
 }

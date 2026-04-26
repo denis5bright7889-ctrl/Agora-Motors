@@ -16,7 +16,7 @@ import EditListingPage from './pages/EditListingPage'
 import FavoritesPage from './pages/FavoritesPage'
 import ProfilePage from './pages/ProfilePage'
 import NotFoundPage from './pages/NotFoundPage'
-import ProtectedRoute from './components/Auth/ProtectedRoute'
+import ProtectedRoute from './components/cars/ProtectedRoute'
 
 function App() {
   return (
