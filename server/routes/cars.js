@@ -1,25 +1,20 @@
-// server/routes/cars.js — Car routes
-
-const router = require('express').Router();
+const express = require('express');
+const multer = require('multer');
 const {
-  getCars, getCar, createCar, updateCar, deleteCar,
-  toggleFavorite, getMyCars, getFavorites, deleteCarImage,
+  getCars,
+  getCarById,
+  createCar,
+  updateCar,
+  deleteCar,
+  uploadImage,
 } = require('../controllers/carController');
-const { protect, optionalAuth } = require('../middleware/auth');
-const { validateCar } = require('../middleware/validate');
-const { upload } = require('../config/cloudinary');
+const { protect } = require('../middleware/authMiddleware');
 
-// Public routes
-router.get('/', optionalAuth, getCars);
-router.get('/mine', protect, getMyCars);         // must come before /:id
-router.get('/favorites', protect, getFavorites); // must come before /:id
-router.get('/:id', optionalAuth, getCar);
+const router = express.Router();
+const upload = multer({ dest: 'uploads/' });
 
-// Protected routes
-router.post('/', protect, upload.array('images', 8), validateCar, createCar);
-router.put('/:id', protect, upload.array('images', 8), updateCar);
-router.delete('/:id', protect, deleteCar);
-router.delete('/:id/images/:imageId', protect, deleteCarImage);
-router.post('/:id/favorite', protect, toggleFavorite);
+router.route('/').get(getCars).post(protect, createCar);
+router.route('/:id').get(getCarById).put(protect, updateCar).delete(protect, deleteCar);
+router.post('/upload', protect, upload.single('image'), uploadImage);
 
 module.exports = router;

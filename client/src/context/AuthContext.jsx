@@ -1,83 +1,66 @@
-// client/src/context/AuthContext.jsx — Global auth state
+import React, { createContext, useState, useEffect } from 'react'
+import api from '../services/api'
+import toast from 'react-hot-toast'
 
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { authApi } from '../api/authApi';
+export const AuthContext = createContext()
 
-const AuthContext = createContext(null);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-const TOKEN_KEY = 'carmax_token';
-const USER_KEY  = 'carmax_user';
-
-export function AuthProvider({ children }) {
-  const [user, setUser]       = useState(() => {
-    try { return JSON.parse(localStorage.getItem(USER_KEY)); } catch { return null; }
-  });
-  const [token, setToken]     = useState(() => localStorage.getItem(TOKEN_KEY));
-  const [loading, setLoading] = useState(true); // initial hydration
-
-  // ── Persist helpers ────────────────────────────────────────────────────
-  const saveSession = (token, user) => {
-    localStorage.setItem(TOKEN_KEY, token);
-    localStorage.setItem(USER_KEY, JSON.stringify(user));
-    setToken(token);
-    setUser(user);
-  };
-
-  const clearSession = () => {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_KEY);
-    setToken(null);
-    setUser(null);
-  };
-
-  // ── Hydrate user on mount (validates stored token) ─────────────────────
   useEffect(() => {
-    const hydrate = async () => {
-      if (!token) { setLoading(false); return; }
-      try {
-        const { data } = await authApi.getMe();
-        setUser(data.user);
-        localStorage.setItem(USER_KEY, JSON.stringify(data.user));
-      } catch {
-        clearSession();
-      } finally {
-        setLoading(false);
-      }
-    };
-    hydrate();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    const token = localStorage.getItem('token')
+    const userData = localStorage.getItem('user')
+    if (token && userData) {
+      setUser(JSON.parse(userData))
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    }
+    setLoading(false)
+  }, [])
 
-  // ── Actions ────────────────────────────────────────────────────────────
-  const register = useCallback(async (formData) => {
-    const { data } = await authApi.register(formData);
-    saveSession(data.token, data.user);
-    return data;
-  }, []);
+  const login = async (email, password) => {
+    try {
+      const response = await api.post('/auth/login', { email, password })
+      const { token, ...userData } = response.data
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(userData))
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      setUser(userData)
+      toast.success('Logged in successfully!')
+      return true
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Login failed')
+      return false
+    }
+  }
 
-  const login = useCallback(async (credentials) => {
-    const { data } = await authApi.login(credentials);
-    saveSession(data.token, data.user);
-    return data;
-  }, []);
+  const register = async (name, email, password) => {
+    try {
+      const response = await api.post('/auth/register', { name, email, password })
+      const { token, ...userData } = response.data
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(userData))
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      setUser(userData)
+      toast.success('Registered successfully!')
+      return true
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Registration failed')
+      return false
+    }
+  }
 
-  const logout = useCallback(() => {
-    clearSession();
-  }, []);
-
-  const updateUser = useCallback((updatedUser) => {
-    setUser(updatedUser);
-    localStorage.setItem(USER_KEY, JSON.stringify(updatedUser));
-  }, []);
+  const logout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    delete api.defaults.headers.common['Authorization']
+    setUser(null)
+    toast.success('Logged out successfully')
+  }
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, register, login, logout, updateUser, isAuthenticated: !!token }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
-  );
+  )
 }
-
-export const useAuth = () => {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
-  return ctx;
-};

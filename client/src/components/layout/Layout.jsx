@@ -1,21 +1,17 @@
-// client/src/components/layout/Layout.jsx
+import React from 'react'
+import Navbar from './Navbar'
+import Footer from './Footer'
 
-import { Outlet, useLocation } from 'react-router-dom';
-import Navbar from './Navbar';
-import Footer from './Footer';
-
-export default function Layout() {
-  const { pathname } = useLocation();
-  // Pages that need full-width treatment (no footer padding)
-  const isAuthPage = ['/login', '/register'].includes(pathname);
-
+const Layout = ({ children }) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
       <Navbar />
-      <main className={`flex-1 ${isAuthPage ? '' : ''}`}>
-        <Outlet />
+      <main className="flex-grow">
+        {children}
       </main>
-      {!isAuthPage && <Footer />}
+      <Footer />
     </div>
-  );
+  )
 }
+
+export default Layout
